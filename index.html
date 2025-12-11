@@ -18,44 +18,62 @@
 </head>
 <body class="d-flex flex-column min-vh-100">
 
-    <!-- ENCABEZADO Y MENÚ DE NAVEGACIÓN -->
     <header class="sticky-top">
-        <!-- En el HEADER -->
-<button class="btn btn-link text-white position-relative p-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCarrito">
-    <i class="fas fa-shopping-cart fs-5"></i>
-    <span id="contador-carrito" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6rem;">0</span>
-</button>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow">
-            <div class="container">
-                <a class="navbar-brand fw-bold" href="index.html">
-                    <i class="fas fa-microchip me-2"></i>TECNOSMART
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow">
+        <div class="container">
+            <!-- LOGO -->
+            <a class="navbar-brand fw-bold" href="index.html">
+                <i class="fas fa-microchip me-2"></i>TECNOSMART
+            </a>
+
+            <!-- BOTÓN HAMBURGUESA (PARA MÓVIL) -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <!-- CONTENIDO DEL MENÚ (LINKS E ICONOS) -->
+            <div class="collapse navbar-collapse" id="menuPrincipal">
                 
-                <div class="collapse navbar-collapse" id="menuPrincipal">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link active" href="index.html">Inicio</a></li>
-                        <li class="nav-item"><a class="nav-link" href="productos.html">Productos</a></li>
-                        <li class="nav-item"><a class="nav-link" href="compras.html">Mis Compras</a></li>
-                        <li class="nav-item"><a class="nav-link" href="acercade.html">Acerca de</a></li>
-                        <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
-                    </ul>
+                <!-- LISTA DE LINKS (A LA IZQUIERDA) -->
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link active" href="index.html">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="productos.html">Productos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="compras.html">Mis Compras</a></li>
+                    <li class="nav-item"><a class="nav-link" href="acercade.html">Acerca de</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
+                </ul>
+                
+                <!-- ICONOS FUNCIONALES (A LA DERECHA) -->
+                <!-- IMPORTANTE: Este div debe estar DENTRO del collapse -->
+                <div class="d-flex align-items-center gap-3">
                     
-                    <!-- Iconos de Buscar, Carrito y Usuario -->
-                    <div class="d-flex align-items-center gap-3">
-                        <a href="#" class="text-white"><i class="fas fa-search"></i></a>
-                        <a href="#" class="text-white position-relative">
-                            <i class="fas fa-shopping-cart"></i>
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size:0.5rem;">2</span>
-                        </a>
-                        <a href="#" class="text-white"><i class="fas fa-user"></i></a>
+                    <!-- 1. BUSCADOR -->
+                    <div class="d-flex align-items-center bg-white rounded px-2" id="search-container">
+                        <input type="text" id="searchInput" class="form-control border-0 shadow-none d-none" placeholder="Buscar..." style="width: 150px;">
+                        <button class="btn btn-link text-primary p-0 text-decoration-none" onclick="toggleSearch()">
+                            <i class="fas fa-search fs-5"></i>
+                        </button>
                     </div>
+
+                    <!-- 2. CARRITO -->
+                    <button class="btn btn-link text-white position-relative p-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCarrito">
+                        <i class="fas fa-shopping-cart fs-5"></i>
+                        <span id="contador-carrito" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6rem;">
+                            0
+                        </span>
+                    </button>
+
+                    <!-- 3. USUARIO -->
+                    <button class="btn btn-link text-white p-0" type="button" data-bs-toggle="modal" data-bs-target="#modalLogin" id="btnUserIcon">
+                        <i class="fas fa-user fs-5"></i>
+                    </button>
                 </div>
+                <!-- FIN ICONOS -->
+
             </div>
-        </nav>
-    </header>
+        </div>
+    </nav>
+</header>
 
    <!-- CARRUSEL DE IMÁGENES -->
     <section id="carruselPrincipal" class="carousel slide" data-bs-ride="carousel">
@@ -156,7 +174,27 @@
             </div>
         </div>
     </footer>
-
+<!-- 2. CÓDIGO HTML PARA EL CARRITO DE COMPRAS (OFFCANVAS) -->
+<!-- Pega esto antes de la etiqueta <script> al final del body -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasCarrito" aria-labelledby="offcanvasLabel">
+    <div class="offcanvas-header bg-primary text-white">
+        <h5 class="offcanvas-title" id="offcanvasLabel"><i class="fas fa-shopping-cart me-2"></i>Tu Carrito</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <!-- Aquí JS pintará los productos agregados -->
+        <div id="carrito-contenedor" class="d-flex flex-column gap-3">
+            <p class="text-center text-muted">El carrito está vacío</p>
+        </div>
+        
+        <hr>
+        <div class="d-flex justify-content-between fw-bold fs-5">
+            <span>Total:</span>
+            <span id="carrito-total">$0</span>
+        </div>
+        <button class="btn btn-success w-100 mt-3" onclick="alert('Compra realizada con éxito')">Finalizar Compra</button>
+    </div>
+</div>
     <!-- JS Bootstrap (Opción CDN) -->
     <script src="assets/js/bootstrap.bundle.min.js"></script>
     <!-- Si usas archivos locales, descomenta: -->
