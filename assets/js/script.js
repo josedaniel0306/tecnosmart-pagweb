@@ -12,7 +12,7 @@ const productos = [
         nombre: "Disco SSD 480GB",
         precio: 180000,
         desc: "Marca Adata - SATA III",
-        img: "https://technologystore2006.com/wp-content/uploads/2020/10/ADATA-SU630-480-1.pnG"
+        img: "https://technologystore2006.com/wp-content/uploads/2020/10/ADATA-SU630-480-1.png"
     },
     {
         id: 3,
