@@ -1,1 +1,95 @@
+/* --- VARIABLES GLOBALES --- */
+:root {
+    --color-primario: #0d6efd; /* Azul Bootstrap */
+    --color-oscuro: #212529;
+    --borde-radio: 10px;
+    --sombra-suave: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* --- ESTILOS GENERALES --- */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+}
+
+/* --- BARRA DE NAVEGACIÓN (NAVBAR) --- */
+.navbar {
+    background: linear-gradient(90deg, #0b5ed7 0%, #0d6efd 100%);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+}
+
+.navbar-brand {
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.nav-link {
+    transition: color 0.3s ease;
+    font-weight: 500;
+}
+
+.nav-link:hover {
+    color: #ffc107 !important; /* Amarillo al pasar el mouse */
+}
+
+.nav-link.active {
+    font-weight: 700;
+    border-bottom: 2px solid #fff;
+}
+
+/* --- CARRUSEL --- */
+.carousel-item img {
+    height: 400px;
+    object-fit: cover; /* Evita que la imagen se deforme */
+    filter: brightness(0.8); /* Oscurece un poco para leer el texto */
+}
+
+/* --- TARJETAS (PRODUCTOS Y CATEGORÍAS) --- */
+.card {
+    border: none;
+    border-radius: var(--borde-radio);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: #fff;
+}
+
+/* Animación al pasar el mouse por encima (Hover) */
+.card:hover {
+    transform: translateY(-5px); /* Se levanta 5px */
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+.card-img-top {
+    border-top-left-radius: var(--borde-radio);
+    border-top-right-radius: var(--borde-radio);
+    height: 200px;
+    object-fit: contain; /* Ajusta la imagen dentro del cuadro */
+    padding: 1rem;
+    background-color: #fff;
+}
+
+/* --- BOTONES --- */
+.btn-primary {
+    border-radius: 50px; /* Botones redondos */
+    padding: 8px 20px;
+    font-weight: 600;
+}
+
+/* --- PIE DE PÁGINA (FOOTER) --- */
+footer {
+    background-color: var(--color-oscuro);
+    color: #adb5bd;
+}
+
+footer a:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+/* --- MAPA (CONTACTO) --- */
+iframe {
+    width: 100%;
+    min-height: 300px;
+    border-radius: var(--borde-radio);
+}
+
 
