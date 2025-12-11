@@ -27,25 +27,32 @@ const productos = [
         precio: 650000,
         desc: "144Hz - 1ms Respuesta",
         img: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=500&q=60"
+    },
+     {
+        id: 5,
+        nombre: "RAM DDR4 16GB RGB",
+        precio: 260000,
+        desc: "Corsair Vengeance - 3600MHz",
+        img: "https://images.unsplash.com/photo-1555618568-9b165d957134?auto=format&fit=crop&w=500&q=60"
     }
 ];
 
-// Variable para guardar el carrito
-let carrito = [];
+// === 2. INICIALIZAR EL CARRITO (RECUPERAR DATOS) ===
+// Aquí está el truco: Intentamos leer del localStorage. Si no hay nada, usamos un array vacío [].
+let carrito = JSON.parse(localStorage.getItem('carritoTecnoSmart')) || [];
 
 // Evento que carga las funciones cuando el HTML está listo
 document.addEventListener('DOMContentLoaded', () => {
-    renderizarProductos();
+    renderizarProductos(); // Solo funcionará en productos.html
+    actualizarCarritoDOM(); // Esto actualizará el numerito rojo en TODAS las páginas
 });
 
-// === 2. CÓDIGO JS PARA MOSTRAR LISTADO DE PRODUCTOS ===
+// === 3. MOSTRAR PRODUCTOS EN EL CATÁLOGO ===
 function renderizarProductos() {
     const contenedor = document.getElementById('contenedor-productos');
-    
-    // Verificamos si estamos en la página de productos
-    if (!contenedor) return; 
+    if (!contenedor) return; // Si no existe el contenedor (ej: estamos en el index), no hace nada
 
-    contenedor.innerHTML = ''; // Limpiamos el contenido
+    contenedor.innerHTML = ''; 
 
     productos.forEach((prod) => {
         const div = document.createElement('div');
@@ -57,7 +64,6 @@ function renderizarProductos() {
                     <h5 class="card-title">${prod.nombre}</h5>
                     <p class="card-text text-muted">${prod.desc}</p>
                     <h4 class="text-primary">$${prod.precio.toLocaleString()}</h4>
-                    <!-- Botón que llama a la función agregar -->
                     <button class="btn btn-primary mt-auto" onclick="agregarAlCarrito(${prod.id})">
                         <i class="fas fa-cart-plus"></i> Agregar
                     </button>
@@ -68,42 +74,46 @@ function renderizarProductos() {
     });
 }
 
-// === 3. CÓDIGO JS PARA AGREGAR PRODUCTOS AL CARRITO ===
+// === 4. AGREGAR AL CARRITO Y GUARDAR ===
 function agregarAlCarrito(prodId) {
-    // Buscar el producto en la base de datos
     const item = productos.find((prod) => prod.id === prodId);
-    
-    // Agregarlo al array del carrito
     carrito.push(item);
     
-    // Actualizar la vista del carrito
-    actualizarCarritoDOM();
+    // GUARDAR EN MEMORIA DEL NAVEGADOR
+    guardarEnStorage();
     
-    // Feedback visual (Alerta)
+    actualizarCarritoDOM();
     alert(`¡${item.nombre} agregado al carrito!`);
 }
 
-// === 4. CÓDIGO JS PARA ELIMINAR PRODUCTOS DEL CARRITO ===
+// === 5. ELIMINAR DEL CARRITO Y GUARDAR ===
 function eliminarDelCarrito(indice) {
-    // Elimina 1 elemento en la posición "indice"
     carrito.splice(indice, 1);
     
-    // Actualizar la vista del carrito
+    // GUARDAR CAMBIOS EN MEMORIA
+    guardarEnStorage();
+    
     actualizarCarritoDOM();
 }
 
-// === FUNCIONES AUXILIARES (Actualizar vista y totales) ===
+// === 6. FUNCIÓN PARA GUARDAR (EL TRUCO DE LA PERSISTENCIA) ===
+function guardarEnStorage() {
+    // Convertimos el array a texto y lo guardamos en el navegador
+    localStorage.setItem('carritoTecnoSmart', JSON.stringify(carrito));
+}
+
+// === 7. ACTUALIZAR LA VISTA (CONTADOR Y LISTA) ===
 function actualizarCarritoDOM() {
     const contenedorCarrito = document.getElementById('carrito-contenedor');
-    const contadorCarrito = document.getElementById('contador-carrito'); // El badge rojo del header
+    const contadorCarrito = document.getElementById('contador-carrito'); 
     const totalCarrito = document.getElementById('carrito-total');
     
-    // 1. Actualizar contador rojo
+    // Actualizar el numerito rojo
     if (contadorCarrito) {
         contadorCarrito.textContent = carrito.length;
     }
 
-    // 2. Pintar los elementos dentro del Offcanvas
+    // Pintar la lista en el panel lateral (Offcanvas)
     if (contenedorCarrito) {
         contenedorCarrito.innerHTML = '';
 
@@ -127,7 +137,7 @@ function actualizarCarritoDOM() {
         }
     }
 
-    // 3. Calcular y mostrar total
+    // Calcular Total
     if (totalCarrito) {
         const total = carrito.reduce((acc, prod) => acc + prod.precio, 0);
         totalCarrito.textContent = `$${total.toLocaleString()}`;
