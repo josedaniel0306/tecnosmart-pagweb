@@ -1,4 +1,4 @@
-
+// === 1. BASE DE DATOS DE PRODUCTOS (Array de Objetos) ===
 const productos = [
   {
     id: 1,
@@ -44,16 +44,25 @@ let carrito = JSON.parse(localStorage.getItem("carritoTecnoSmart")) || [];
 document.addEventListener("DOMContentLoaded", () => {
   renderizarProductos();     // Solo hace algo en productos.html
   actualizarCarritoDOM();    // Actualiza numerito y offcanvas en cualquier página
+  initBuscador();            // Activa la barra de búsqueda del navbar
 });
 
-// === 3. MOSTRAR PRODUCTOS EN EL CATÁLOGO ===
-function renderizarProductos() {
+// === 3. MOSTRAR PRODUCTOS EN EL CATÁLOGO (productos.html) ===
+function renderizarProductos(lista = productos) {
   const contenedor = document.getElementById("contenedor-productos");
   if (!contenedor) return; // Si no existe, estamos en index u otra página
 
   contenedor.innerHTML = "";
 
-  productos.forEach((prod) => {
+  if (lista.length === 0) {
+    contenedor.innerHTML = `
+      <div class="col-12">
+        <p class="text-center text-muted">No se encontraron productos.</p>
+      </div>`;
+    return;
+  }
+
+  lista.forEach((prod) => {
     const div = document.createElement("div");
     div.classList.add("col");
     div.innerHTML = `
@@ -97,7 +106,7 @@ function guardarEnStorage() {
   localStorage.setItem("carritoTecnoSmart", JSON.stringify(carrito));
 }
 
-// === 7. ACTUALIZAR LA VISTA (CONTADOR Y LISTA) ===
+// === 7. ACTUALIZAR LA VISTA (CONTADOR Y LISTA DEL OFFCANVAS) ===
 function actualizarCarritoDOM() {
   const contenedorCarrito = document.getElementById("carrito-contenedor");
   const contadorCarrito = document.getElementById("contador-carrito");
@@ -147,7 +156,7 @@ function actualizarCarritoDOM() {
   }
 }
 
-// === 8. FINALIZAR COMPRA (BOTÓN DEL OFFCANVAS) ===
+// === 8. FINALIZAR COMPRA (BOTÓN DEL OFFCANVAS → checkout.html) ===
 const btnFinalizarCompra = document.getElementById("btnFinalizarCompra");
 if (btnFinalizarCompra) {
   btnFinalizarCompra.addEventListener("click", () => {
@@ -155,102 +164,36 @@ if (btnFinalizarCompra) {
       alert("Tu carrito está vacío.");
       return;
     }
-
-    alert("Compra realizada (simulada). ¡Gracias por tu compra!");
-    carrito = [];
-    guardarEnStorage();
-    actualizarCarritoDOM();
+    // Ir a la página de checkout
+    window.location.href = "checkout.html";
   });
 }
-// ====== CHECKOUT (usa los mismos datos del carrito) ======
 
-// Referencias
-const secciónCarrito = document.getElementById("cart");
-const secciónCheckout = document.getElementById("checkout");
-const btnCheckout = document.getElementById("btnCheckout");
-const checkoutSummaryItems = document.getElementById("checkoutSummaryItems");
-const summarySubtotal = document.getElementById("summarySubtotal");
-const summaryTotal = document.getElementById("summaryTotal");
-const checkoutForm = document.getElementById("checkoutForm");
+// === 9. BUSCADOR EN EL NAVBAR (filtra productos en productos.html) ===
+function initBuscador() {
+  const input = document.getElementById("searchInput");
+  if (!input) return;
 
-// Mostrar/ocultar secciones tipo SPA
-function showPage(id) {
-  document.querySelectorAll(".page").forEach((p) => p.classList.remove("active"));
-  const sec = document.getElementById(id);
-  if (sec) sec.classList.add("active");
-}
-
-// Botón "Finalizar compra" dentro de la sección Carrito (no el offcanvas)
-if (btnCheckout) {
-  btnCheckout.addEventListener("click", () => {
-    if (carrito.length === 0) {
-      alert("Tu carrito está vacío.");
+  input.addEventListener("input", () => {
+    const texto = input.value.toLowerCase().trim();
+    if (!document.getElementById("contenedor-productos")) {
+      // Si no estamos en productos.html, solo actualiza el valor para cuando vayamos
       return;
     }
-    renderCheckoutSummary();
-    showPage("checkout");
+    const filtrados = productos.filter((p) =>
+      p.nombre.toLowerCase().includes(texto) ||
+      p.desc.toLowerCase().includes(texto)
+    );
+    renderizarProductos(filtrados);
   });
 }
 
-// Botones de volver
-document.querySelectorAll(".back-btn").forEach((btn) => {
-  btn.addEventListener("click", () => {
-    const target = btn.dataset.target;
-    if (target) showPage(target);
-  });
-});
-
-// Rellenar resumen del checkout
-function renderCheckoutSummary() {
-  if (!checkoutSummaryItems || !summarySubtotal || !summaryTotal) return;
-
-  checkoutSummaryItems.innerHTML = "";
-  if (carrito.length === 0) {
-    checkoutSummaryItems.innerHTML = "<p>No hay productos en el pedido.</p>";
-    summarySubtotal.textContent = "$0";
-    summaryTotal.textContent = "$0";
-    return;
+// Alternar mostrar/ocultar input de búsqueda (lo llama el botón de la lupa)
+function toggleSearch() {
+  const input = document.getElementById("searchInput");
+  if (!input) return;
+  input.classList.toggle("d-none");
+  if (!input.classList.contains("d-none")) {
+    input.focus();
   }
-
-  let subtotal = 0;
-  const frag = document.createDocumentFragment();
-
-  carrito.forEach((prod) => {
-    subtotal += prod.precio;
-    const row = document.createElement("div");
-    row.className = "checkout-summary-item";
-    row.innerHTML = `
-      <span>${prod.nombre}</span>
-      <span>$${prod.precio.toLocaleString()}</span>
-    `;
-    frag.appendChild(row);
-  });
-
-  checkoutSummaryItems.appendChild(frag);
-  summarySubtotal.textContent = `$${subtotal.toLocaleString()}`;
-  summaryTotal.textContent = `$${subtotal.toLocaleString()}`; // envío gratis
-}
-
-// Envío del formulario de checkout (simulado)
-if (checkoutForm) {
-  checkoutForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-    if (carrito.length === 0) {
-      alert("Tu carrito está vacío.");
-      showPage("cart");
-      return;
-    }
-
-    const formData = new FormData(checkoutForm);
-    const nombre = formData.get("name");
-    const email = formData.get("email");
-
-    alert(`Gracias por tu compra, ${nombre}. Te enviaremos la confirmación a ${email}.`);
-
-    carrito = [];
-    guardarEnStorage();
-    actualizarCarritoDOM();
-    checkoutForm.reset();
-    showPage("home"); // no tienes sección home, así que puedes usar "cart" o quitar esto
-  });
 }
