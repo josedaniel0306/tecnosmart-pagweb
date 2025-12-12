@@ -1,10 +1,56 @@
-// Carga inicial del carrito al arrancar la app
-state.cart = loadCart();
+// Estado global simple
+const state = {
+  products: [
+    // Ejemplos: reemplaza con tus datos reales
+    { id: "ram-8gb", title: "Memoria RAM DDR4 8GB", brand: "Kingston", img: "img/ram.jpg", price: 120000 },
+    { id: "ssd-480", title: "Disco Estado Sólido 480GB", brand: "Adata", img: "img/ssd.jpg", price: 180000 },
+    { id: "kbd-rgb", title: "Teclado Mecánico RGB", brand: "Redragon Kumara", img: "img/teclado.jpg", price: 210000 }
+  ],
+  cart: []
+};
 
-// Utilidad: formatear precios
+// Referencias DOM
+const cartItems = document.getElementById("cartItems");
+const cartTotal = document.getElementById("cartTotal");
+const cartSection = document.getElementById("cart");
+const checkoutSection = document.getElementById("checkout");
+const checkoutSummaryItems = document.getElementById("checkoutSummaryItems");
+const summarySubtotal = document.getElementById("summarySubtotal");
+const summaryTotal = document.getElementById("summaryTotal");
+const checkoutForm = document.getElementById("checkoutForm");
+const checkoutBtn = document.getElementById("btnCheckout");
+// Si tienes un ícono de carrito en el header, con id="cartCount"
+const cartCount = document.getElementById("cartCount");
+
+// Utilidad: formatear precios (sin separadores para simplificar)
 function formatPrice(value) {
   return `$${value.toFixed(2)}`;
 }
+
+// Cargar carrito desde localStorage
+function loadCart() {
+  try {
+    const raw = localStorage.getItem("tecno_cart_v1");
+    const parsed = raw ? JSON.parse(raw) : [];
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (e) {
+    console.error("Error cargando carrito", e);
+    return [];
+  }
+}
+
+// Guardar carrito
+function saveCart() {
+  try {
+    localStorage.setItem("tecno_cart_v1", JSON.stringify(state.cart));
+  } catch (e) {
+    console.error("Error guardando carrito", e);
+  }
+}
+
+// Inicializar estado
+state.cart = loadCart();
+updateCartUI();
 
 // Añadir al carrito
 function addToCart(id, qty = 1) {
@@ -19,32 +65,12 @@ function addToCart(id, qty = 1) {
   updateCartUI();
 }
 
-// Guardar/recuperar carrito
-function saveCart() {
-  try {
-    localStorage.setItem("tecno_cart_v1", JSON.stringify(state.cart));
-  } catch (e) {
-    console.error("Error guardando carrito", e);
-  }
-}
-
-function loadCart() {
-  try {
-    const raw = localStorage.getItem("tecno_cart_v1");
-    const parsed = raw ? JSON.parse(raw) : [];
-    return Array.isArray(parsed) ? parsed : [];
-  } catch (e) {
-    console.error("Error cargando carrito", e);
-    return [];
-  }
-}
-
-// Interfaz del carrito
+// Actualizar UI del carrito (contador, total, lista si está visible)
 function updateCartUI() {
   const count = state.cart.reduce((s, i) => s + i.qty, 0);
   if (cartCount) cartCount.textContent = count;
 
-  if (document.getElementById("cart").classList.contains("active")) {
+  if (cartSection.classList.contains("active")) {
     renderCartItems();
   }
 
@@ -55,7 +81,7 @@ function updateCartUI() {
   cartTotal.textContent = formatPrice(total);
 }
 
-// Renderiza items del carrito
+// Renderizar productos del carrito
 function renderCartItems() {
   cartItems.innerHTML = "";
   if (state.cart.length === 0) {
@@ -72,7 +98,7 @@ function renderCartItems() {
     const el = document.createElement("div");
     el.className = "cart-item";
     el.innerHTML = `
-      <img src="${p.img}" alt="${p.title}" />
+      <img src="${p.img}" alt="${p.title}">
       <div style="flex:1">
         <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
           <strong>${p.title}</strong>
@@ -93,16 +119,12 @@ function renderCartItems() {
   });
 
   cartItems.appendChild(fragment);
-
-  // Delegación de eventos para mejor rendimiento
-  cartItems.addEventListener("click", cartItemsClickHandler);
 }
 
-// Manejador único para los botones dentro del carrito
-function cartItemsClickHandler(e) {
+// Delegación de eventos dentro del carrito
+cartItems.addEventListener("click", (e) => {
   const btn = e.target.closest("button");
   if (!btn) return;
-
   const id = btn.dataset.id;
   if (!id) return;
 
@@ -113,7 +135,7 @@ function cartItemsClickHandler(e) {
   } else if (btn.classList.contains("remove")) {
     removeFromCart(id);
   }
-}
+});
 
 // Cambiar cantidad
 function changeQty(id, delta) {
@@ -128,24 +150,13 @@ function changeQty(id, delta) {
   updateCartUI();
 }
 
-// Remover
+// Eliminar producto
 function removeFromCart(id) {
   state.cart = state.cart.filter((i) => i.id !== id);
   saveCart();
   updateCartUI();
 }
 
-// Checkout (ejemplo básico)
-const checkoutBtn = document.getElementById("btnCheckout");
-if (checkoutBtn) {
-  checkoutBtn.addEventListener("click", () => {
-    if (state.cart.length === 0) {
-      alert("Tu carrito está vacío.");
-      return;
-    }
-    alert("Gracias por tu compra (simulación).");
-    state.cart = [];
-    saveCart();
-    updateCartUI();
-  });
-}
+// Navegación entre secciones
+function showPage(id) {
+  document.querySelector
