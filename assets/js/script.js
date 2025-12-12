@@ -162,3 +162,95 @@ if (btnFinalizarCompra) {
     actualizarCarritoDOM();
   });
 }
+// ====== CHECKOUT (usa los mismos datos del carrito) ======
+
+// Referencias
+const secciónCarrito = document.getElementById("cart");
+const secciónCheckout = document.getElementById("checkout");
+const btnCheckout = document.getElementById("btnCheckout");
+const checkoutSummaryItems = document.getElementById("checkoutSummaryItems");
+const summarySubtotal = document.getElementById("summarySubtotal");
+const summaryTotal = document.getElementById("summaryTotal");
+const checkoutForm = document.getElementById("checkoutForm");
+
+// Mostrar/ocultar secciones tipo SPA
+function showPage(id) {
+  document.querySelectorAll(".page").forEach((p) => p.classList.remove("active"));
+  const sec = document.getElementById(id);
+  if (sec) sec.classList.add("active");
+}
+
+// Botón "Finalizar compra" dentro de la sección Carrito (no el offcanvas)
+if (btnCheckout) {
+  btnCheckout.addEventListener("click", () => {
+    if (carrito.length === 0) {
+      alert("Tu carrito está vacío.");
+      return;
+    }
+    renderCheckoutSummary();
+    showPage("checkout");
+  });
+}
+
+// Botones de volver
+document.querySelectorAll(".back-btn").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const target = btn.dataset.target;
+    if (target) showPage(target);
+  });
+});
+
+// Rellenar resumen del checkout
+function renderCheckoutSummary() {
+  if (!checkoutSummaryItems || !summarySubtotal || !summaryTotal) return;
+
+  checkoutSummaryItems.innerHTML = "";
+  if (carrito.length === 0) {
+    checkoutSummaryItems.innerHTML = "<p>No hay productos en el pedido.</p>";
+    summarySubtotal.textContent = "$0";
+    summaryTotal.textContent = "$0";
+    return;
+  }
+
+  let subtotal = 0;
+  const frag = document.createDocumentFragment();
+
+  carrito.forEach((prod) => {
+    subtotal += prod.precio;
+    const row = document.createElement("div");
+    row.className = "checkout-summary-item";
+    row.innerHTML = `
+      <span>${prod.nombre}</span>
+      <span>$${prod.precio.toLocaleString()}</span>
+    `;
+    frag.appendChild(row);
+  });
+
+  checkoutSummaryItems.appendChild(frag);
+  summarySubtotal.textContent = `$${subtotal.toLocaleString()}`;
+  summaryTotal.textContent = `$${subtotal.toLocaleString()}`; // envío gratis
+}
+
+// Envío del formulario de checkout (simulado)
+if (checkoutForm) {
+  checkoutForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (carrito.length === 0) {
+      alert("Tu carrito está vacío.");
+      showPage("cart");
+      return;
+    }
+
+    const formData = new FormData(checkoutForm);
+    const nombre = formData.get("name");
+    const email = formData.get("email");
+
+    alert(`Gracias por tu compra, ${nombre}. Te enviaremos la confirmación a ${email}.`);
+
+    carrito = [];
+    guardarEnStorage();
+    actualizarCarritoDOM();
+    checkoutForm.reset();
+    showPage("home"); // no tienes sección home, así que puedes usar "cart" o quitar esto
+  });
+}
