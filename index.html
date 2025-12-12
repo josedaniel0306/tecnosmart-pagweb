@@ -8,6 +8,7 @@
   <link href="assets/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/carrito.css">
 </head>
 <body class="d-flex flex-column min-vh-100">
 
@@ -30,6 +31,8 @@
             <li class="nav-item"><a class="nav-link" href="compras.html">Mis Compras</a></li>
             <li class="nav-item"><a class="nav-link" href="acercade.html">Acerca de</a></li>
             <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
+            <!-- Enlace directo al carrito de página completa -->
+            <li class="nav-item"><a class="nav-link" href="carrito.html">Carrito</a></li>
           </ul>
 
           <div class="d-flex align-items-center gap-3">
@@ -42,7 +45,7 @@
               </button>
             </div>
 
-            <!-- CARRITO ICONO -->
+            <!-- CARRITO ICONO (abre el offcanvas) -->
             <button class="btn btn-link text-white position-relative p-0" type="button"
                     data-bs-toggle="offcanvas" data-bs-target="#offcanvasCarrito">
               <i class="fas fa-shopping-cart fs-5"></i>
@@ -110,7 +113,7 @@
     </div>
   </footer>
 
-  <!-- OFFCANVAS CARRITO (solo se ve al abrirlo) -->
+  <!-- OFFCANVAS CARRITO (solo vista rápida; puedes seguir usando o quitarlo) -->
   <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasCarrito" aria-labelledby="offcanvasLabel">
     <div class="offcanvas-header bg-primary text-white">
       <h5 class="offcanvas-title" id="offcanvasLabel">
@@ -127,9 +130,10 @@
         <span>Total:</span>
         <span id="carrito-total">$0</span>
       </div>
-      <button class="btn btn-success w-100 mt-3" id="btnFinalizarCompra">
-        Continuar al checkout
-      </button>
+      <!-- Este botón lleva al carrito de página completa -->
+      <a href="carrito.html" class="btn btn-success w-100 mt-3">
+        Ver carrito detallado
+      </a>
     </div>
   </div>
 

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Carrito - TecnoSmart</title>
+
+  <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/carrito.css">
+</head>
+<body>
+
+  <header class="sticky-top">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow">
+      <div class="container">
+        <a class="navbar-brand fw-bold" href="index.html">
+          <i class="fas fa-microchip me-2"></i>TECNOSMART
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="menuPrincipal">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+            <li class="nav-item"><a class="nav-link" href="productos.html">Productos</a></li>
+            <li class="nav-item"><a class="nav-link active" href="carrito.html">Carrito</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- PÁGINA DE CARRITO DETALLADO -->
+  <section id="cart" class="page active">
+    <button class="back-btn" onclick="window.location.href='productos.html'">
+      ← Volver
+    </button>
+
+    <h2>Carrito</h2>
+
+    <div id="cartItems"></div>
+
+    <div class="cart-footer">
+      <div id="cartTotal">Subtotal: $0</div>
+      <button id="btnCheckout">Finalizar compra</button>
+    </div>
+  </section>
+
+  <script src="assets/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/script.js"></script>
+</body>
+</html>

@@ -3,35 +3,50 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>TecnoSmart - Checkout</title>
-
+  <title>TecnoSmart - Acerca de</title>
+  
+  <!-- CSS Bootstrap (local) -->
   <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- FontAwesome (Iconos) -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Tu CSS Personalizado -->
   <link rel="stylesheet" href="assets/css/style.css">
+  <!-- Opcional: estilos del carrito en página -->
+  <link rel="stylesheet" href="assets/css/carrito.css">
 </head>
+
 <body class="d-flex flex-column min-vh-100">
 
-  <!-- NAVBAR (mismo que en las demás páginas) -->
+  <!-- NAVBAR -->
   <header class="sticky-top">
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow">
       <div class="container">
+        <!-- LOGO -->
         <a class="navbar-brand fw-bold" href="index.html">
           <i class="fas fa-microchip me-2"></i>TECNOSMART
         </a>
 
+        <!-- BOTÓN MENÚ MÓVIL -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal">
           <span class="navbar-toggler-icon"></span>
         </button>
-
+        
+        <!-- CONTENIDO COLLAPSE -->
         <div class="collapse navbar-collapse" id="menuPrincipal">
+          
+          <!-- ENLACES (A la izquierda) -->
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
             <li class="nav-item"><a class="nav-link" href="productos.html">Productos</a></li>
             <li class="nav-item"><a class="nav-link" href="compras.html">Mis Compras</a></li>
-            <li class="nav-item"><a class="nav-link" href="acercade.html">Acerca de</a></li>
+            <li class="nav-item"><a class="nav-link active" href="acercade.html">Acerca de</a></li>
             <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
+            <li class="nav-item"><a class="nav-link" href="carrito.html">Carrito</a></li>
           </ul>
-
+          
+          <!-- ICONOS (A la derecha) -->
           <div class="d-flex align-items-center gap-3">
             <!-- Lupa -->
             <div class="d-flex align-items-center bg-white rounded px-2" id="search-container">
@@ -42,7 +57,7 @@
               </button>
             </div>
 
-            <!-- Carrito icono (no abre offcanvas aquí, pero mantiene el contador) -->
+            <!-- Carrito Icono -->
             <button class="btn btn-link text-white position-relative p-0" type="button"
                     data-bs-toggle="offcanvas" data-bs-target="#offcanvasCarrito">
               <i class="fas fa-shopping-cart fs-5"></i>
@@ -50,128 +65,46 @@
                     class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
                     style="font-size: 0.6rem;">0</span>
             </button>
+
+            <!-- Usuario Icono -->
+            <button class="btn btn-link text-white p-0" type="button"
+                    data-bs-toggle="modal" data-bs-target="#modalLogin" id="btnUserIcon">
+              <i class="fas fa-user fs-5"></i>
+            </button>
           </div>
         </div>
       </div>
     </nav>
   </header>
 
-  <!-- CONTENIDO CHECKOUT -->
+  <!-- CONTENIDO PRINCIPAL -->
   <main class="container my-5">
-    <h1 class="mb-4">Checkout</h1>
-    <div class="row g-4">
-      <!-- Datos de entrega -->
-      <div class="col-lg-7">
-        <div class="card shadow-sm">
-          <div class="card-body">
-            <h4 class="mb-3">Datos de entrega</h4>
-            <form id="checkoutForm">
-              <div class="mb-3">
-                <label for="name" class="form-label">Nombre completo</label>
-                <input id="name" name="name" type="text" class="form-control" required placeholder="Juan Pérez">
-              </div>
-              <div class="mb-3">
-                <label for="email" class="form-label">Correo electrónico</label>
-                <input id="email" name="email" type="email" class="form-control" required placeholder="correo@ejemplo.com">
-              </div>
-              <div class="mb-3">
-                <label for="phone" class="form-label">Teléfono</label>
-                <input id="phone" name="phone" type="tel" class="form-control" required placeholder="3001234567">
-              </div>
-
-              <h5 class="mt-4 mb-3">Dirección de envío</h5>
-              <div class="mb-3">
-                <label for="address" class="form-label">Dirección</label>
-                <input id="address" name="address" type="text" class="form-control" required placeholder="Calle 00 #00-00">
-              </div>
-              <div class="row">
-                <div class="col-md-6 mb-3">
-                  <label for="city" class="form-label">Ciudad</label>
-                  <input id="city" name="city" type="text" class="form-control" required placeholder="Barranquilla">
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label for="zip" class="form-label">Código postal</label>
-                  <input id="zip" name="zip" type="text" class="form-control" required placeholder="080001">
-                </div>
-              </div>
-
-              <h5 class="mt-4 mb-3">Pago (simulado)</h5>
-              <div class="mb-3">
-                <label for="cardNumber" class="form-label">Número de tarjeta</label>
-                <input id="cardNumber" name="cardNumber" type="text"
-                       class="form-control" inputmode="numeric"
-                       minlength="13" maxlength="19" required placeholder="4242 4242 4242 4242">
-              </div>
-              <div class="row">
-                <div class="col-md-6 mb-3">
-                  <label for="cardExp" class="form-label">Fecha exp.</label>
-                  <input id="cardExp" name="cardExp" type="text" class="form-control" required placeholder="MM/AA">
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label for="cardCvc" class="form-label">CVC</label>
-                  <input id="cardCvc" name="cardCvc" type="text" class="form-control"
-                         inputmode="numeric" minlength="3" maxlength="4" required placeholder="123">
-                </div>
-              </div>
-
-              <button type="submit" class="btn btn-success w-100 mt-2">
-                Confirmar pedido
-              </button>
-            </form>
-          </div>
-        </div>
+    <div class="row align-items-center">
+      <!-- Columna de la Imagen -->
+      <div class="col-md-6 mb-4 mb-md-0">
+        <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80"
+             class="img-fluid rounded shadow" alt="Equipo TecnoSmart">
       </div>
-
-      <!-- Resumen del pedido -->
-      <div class="col-lg-5">
-        <div class="card shadow-sm">
-          <div class="card-body">
-            <h4 class="mb-3">Resumen del pedido</h4>
-            <div id="checkoutSummaryItems" class="mb-3" style="max-height: 260px; overflow-y: auto;"></div>
-            <hr>
-            <div class="d-flex justify-content-between mb-2">
-              <span>Subtotal</span>
-              <strong id="summarySubtotal">$0</strong>
-            </div>
-            <div class="d-flex justify-content-between mb-2">
-              <span>Envío</span>
-              <span>Gratis</span>
-            </div>
-            <div class="d-flex justify-content-between fw-bold
-            <div class="d-flex justify-content-between fw-bold fs-5">
-              <span>Total</span>
-              <strong id="summaryTotal">$0</strong>
-            </div>
-          </div>
-        </div>
+      
+      <!-- Columna del Texto -->
+      <div class="col-md-6">
+        <h1 class="text-primary mb-3">Acerca de TecnoSmart</h1>
+        <p class="lead fw-bold text-dark">Somos líderes en la distribución de partes de computador desde 2025.</p>
+        <p class="text-secondary">
+          Nuestra misión es ofrecer tecnología de punta al mejor precio del mercado,
+          garantizando soporte técnico especializado y garantía real en todos nuestros productos.
+        </p>
+        
+        <ul class="list-unstyled mt-4">
+          <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Soporte 24/7</li>
+          <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Envíos a todo el país</li>
+          <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Garantía extendida</li>
+        </ul>
       </div>
     </div>
   </main>
 
-  <!-- OFFCANVAS CARRITO (mismo que en las demás páginas, opcional aquí) -->
-  <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasCarrito" aria-labelledby="offcanvasLabel">
-    <div class="offcanvas-header bg-primary text-white">
-      <h5 class="offcanvas-title" id="offcanvasLabel">
-        <i class="fas fa-shopping-cart me-2"></i>Tu Carrito
-      </h5>
-      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-    <div class="offcanvas-body">
-      <div id="carrito-contenedor" class="d-flex flex-column gap-3">
-        <p class="text-center text-muted">El carrito está vacío</p>
-      </div>
-      <hr>
-      <div class="d-flex justify-content-between fw-bold fs-5">
-        <span>Total:</span>
-        <span id="carrito-total">$0</span>
-      </div>
-      <button class="btn btn-success w-100 mt-3" id="btnFinalizarCompra">
-        Volver al carrito
-      </button>
-    </div>
-  </div>
-
-  <!-- FOOTER (igual que en otras páginas) -->
+  <!-- PIE DE PÁGINA -->
   <footer class="bg-dark text-white pt-4 pb-2 mt-auto">
     <div class="container text-center text-md-start">
       <div class="row">
@@ -194,70 +127,32 @@
     </div>
   </footer>
 
+  <!-- OFFCANVAS CARRITO -->
+  <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasCarrito" aria-labelledby="offcanvasLabel">
+    <div class="offcanvas-header bg-primary text-white">
+      <h5 class="offcanvas-title" id="offcanvasLabel">
+        <i class="fas fa-shopping-cart me-2"></i>Tu Carrito
+      </h5>
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <div id="carrito-contenedor" class="d-flex flex-column gap-3">
+        <p class="text-center text-muted">El carrito está vacío</p>
+      </div>
+      <hr>
+      <div class="d-flex justify-content-between fw-bold fs-5">
+        <span>Total:</span>
+        <span id="carrito-total">$0</span>
+      </div>
+      <a href="carrito.html" class="btn btn-success w-100 mt-3">
+        Ver carrito detallado
+      </a>
+    </div>
+  </div>
+
   <!-- SCRIPTS -->
   <script src="assets/js/bootstrap.bundle.min.js"></script>
   <script src="assets/js/script.js"></script>
-  <script>
-    // Cargar carrito desde localStorage
-    let carritoCheckout = JSON.parse(localStorage.getItem("carritoTecnoSmart")) || [];
-
-    // Referencias
-    const summaryItems = document.getElementById("checkoutSummaryItems");
-    const summarySubtotal = document.getElementById("summarySubtotal");
-    const summaryTotal = document.getElementById("summaryTotal");
-    const checkoutForm = document.getElementById("checkoutForm");
-
-    function renderResumenCheckout() {
-      if (!summaryItems) return;
-
-      summaryItems.innerHTML = "";
-      if (carritoCheckout.length === 0) {
-        summaryItems.innerHTML = "<p class='text-muted'>Tu carrito está vacío.</p>";
-        summarySubtotal.textContent = "$0";
-        summaryTotal.textContent = "$0";
-        return;
-      }
-
-      let subtotal = 0;
-      carritoCheckout.forEach((prod) => {
-        subtotal += prod.precio;
-        const row = document.createElement("div");
-        row.className = "d-flex justify-content-between mb-1";
-        row.innerHTML = `
-          <span>${prod.nombre}</span>
-          <span>$${prod.precio.toLocaleString()}</span>
-        `;
-        summaryItems.appendChild(row);
-      });
-
-      summarySubtotal.textContent = `$${subtotal.toLocaleString()}`;
-      summaryTotal.textContent = `$${subtotal.toLocaleString()}`; // envío gratis
-    }
-
-    renderResumenCheckout();
-
-    // Envío del formulario (simulado)
-    if (checkoutForm) {
-      checkoutForm.addEventListener("submit", (e) => {
-        e.preventDefault();
-        if (carritoCheckout.length === 0) {
-          alert("Tu carrito está vacío.");
-          window.location.href = "productos.html";
-          return;
-        }
-
-        const data = new FormData(checkoutForm);
-        const nombre = data.get("name");
-        const email = data.get("email");
-
-        alert(`Gracias por tu compra, ${nombre}. Te enviaremos la confirmación a ${email}.`);
-
-        // Vaciar carrito y redirigir
-        carritoCheckout = [];
-        localStorage.setItem("carritoTecnoSmart", JSON.stringify(carritoCheckout));
-        window.location.href = "compras.html";
-      });
-    }
-  </script>
 </body>
 </html>
+
