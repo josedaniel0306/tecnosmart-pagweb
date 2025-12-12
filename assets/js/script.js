@@ -1,4 +1,4 @@
-// === 1. BASE DE DATOS DE PRODUCTOS (Array de Objetos) ===
+
 const productos = [
   {
     id: 1,
