@@ -93,3 +93,25 @@ iframe {
 }
 
 
+/* Offcanvas carrito: contenido flexible */
+#offcanvasCarrito .offcanvas-body {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Lista de productos dentro del carrito */
+#carrito-contenedor {
+  flex: 1;                 /* ocupa todo el alto disponible */
+  overflow-y: auto;        /* scroll solo aquí cuando hay muchos productos */
+}
+
+/* Fila del total y botón siempre abajo */
+#offcanvasCarrito .offcanvas-body > hr {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+#offcanvasCarrito .offcanvas-body .d-flex.fw-bold.fs-5,
+#offcanvasCarrito #btnFinalizarCompra {
+  flex-shrink: 0;          /* no se encogen, quedan al final */
+}
